@@ -1,0 +1,23 @@
+{
+  "name": "confyio",
+  "version": "0.1.0",
+  "description": "Official Confy API library client for node.js",
+  "author": "Pavan Kumar Sunkara <pavan.sss1991@gmail.com> (https://github.com/pksunkara)",
+  "homepage": "https://confy.io",
+  "keywords": ["alpaca", "confyio", "confy", "assemblymade", "api", "client", "library"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asm-products/confy-node"
+  },
+  "main": "./lib/index.js",
+  "dependencies": {
+    "request": "2.x.x"
+  },
+  "bugs": {
+    "url": "https://github.com/asm-products/confy-node/issues"
+  },
+  "license": "BSD",
+  "engines": {
+    "node": ">= 0.8.0"
+  }
+}
