@@ -21,7 +21,24 @@ Works with [ 0.8 / 0.9 / 0.10 / 0.11 ]
 ```js
 var confy = require('confyio');
 
-// Then we instantiate a client (as shown below)
+// Retrieve the config using URL
+confy.config('https://user:pass@api.confy.io/orgs/company/project/app/envs/production', callback);
+
+// or using options hash
+confy.config({
+  host: 'https://api.confy.io', user: 'user', pass: 'pass',
+  org: 'company', project: 'app', env: 'production'
+}, callback);
+
+// => { 'port': 6000, 'db': { 'pass': 'sun' } }
+
+// Callback is given below
+function (err, config) {
+  config.port // => 6000
+  config.db.pass // => 'sun'
+}
+
+// Or you could instantiate a client to work with other api (as shown below)
 ```
 
 ### Build a client
@@ -31,10 +48,9 @@ __Using this api without authentication gives an error__
 ##### Basic authentication
 
 ```js
-var client = confy.client({
-    username: 'pksunkara',
-    password: 'password'
-}, clientOptions);
+var auth = { username: 'pksunkara', password: 'password' };
+
+var client = confy.client(auth, clientOptions);
 ```
 
 ### Client Options
