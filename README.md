@@ -257,6 +257,43 @@ The following arguments are required:
 teams.destroy("consultants", options, callback);
 ```
 
+### Members api
+
+Teams contain a list of users. The Authenticated user should be the owner of the organization.
+
+The following arguments are required:
+
+ * __org__: Name of the organization
+ * __team__: Name of the team
+
+```js
+var members = client.members("bigcompany", "consultants");
+```
+
+##### Add a member (POST /orgs/:org/teams/:team/member)
+
+Add the user to the given team. The __user__ in the request needs to be a string.
+
+The following arguments are required:
+
+ * __user__: Username of the user
+
+```js
+members.add("johnsmith", options, callback);
+```
+
+##### Remove a member (DELETE /orgs/:org/teams/:team/member)
+
+Remove users from the given team. The __user__ in the request needs to be a string. Cannot delete the default member in a team.
+
+The following arguments are required:
+
+ * __user__: Username of the user
+
+```js
+members.remove("johnsmith", options, callback);
+```
+
 ### Projects api
 
 An organization can contain any number of projects.
@@ -325,6 +362,43 @@ The following arguments are required:
 
 ```js
 projects.destroy("knowledgebase", options, callback);
+```
+
+### Access api
+
+List of teams who has access to the project. Default team __Owners__ will have access to every project. Authenticated user should be the owner of the organization for the below endpoints.
+
+The following arguments are required:
+
+ * __org__: Name of the organization
+ * __project__: Name of the project
+
+```js
+var access = client.access("bigcompany", "knowledgebase");
+```
+
+##### Add a team (POST /orgs/:org/projects/:project/access)
+
+Give the team access to the given project. The __team__ in the request needs to be a string.
+
+The following arguments are required:
+
+ * __team__: Name of the team
+
+```js
+access.add("consultants", options, callback);
+```
+
+##### Remove a team (DELETE /orgs/:org/projects/:project/access)
+
+Remove project access for the given team. The __team__ in the request needs to be a string. Can't delete default team's access.
+
+The following arguments are required:
+
+ * __team__: Name of the team
+
+```js
+access.remove("consultants", options, callback);
 ```
 
 ### Environments api
