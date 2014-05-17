@@ -18,32 +18,17 @@ Works with [ 0.8 / 0.9 / 0.10 / 0.11 ]
 
 ## Usage
 
+There are two ways of loading the config.
+
+ * You can either load it as a hash object with the same structure into a variable.
+ * Or you can load it directly into `process.env` with the key formed by concatenizing the path keys with underscores.
+
 ```js
 var confy = require('confyio');
 
-// Retrieve the config using URL
-confy.config.load('https://user:pass@api.confy.io/orgs/company/project/app/envs/production', callback);
-
-// or using options hash
-confy.config.load({
-  host: 'https://api.confy.io', user: 'user', pass: 'pass',
-  org: 'company', project: 'app', env: 'production'
-}, callback);
-
+// When the config is
 // => { 'port': 6000, 'db': { 'pass': 'sun' } }
 
-// Callback is given below
-function (err, config) {
-  config.port // => 6000
-  config.db.pass // => 'sun'
-}
-
-// Or you could instantiate a client to work with other api (as shown below)
-```
-
-You can also load the config directly into environment variables by doing as shown below. All the values will be stored in the key formed by concatenizing their keys with underscores.
-
-```js
 // Using URL
 confy.config.env('https://user:pass@api.confy.io/orgs/company/project/app/envs/production', callback);
 
@@ -61,6 +46,25 @@ function (err) {
   // ['db']['pass']
   process.env.DB_PASS // => 'sun'
 }
+```
+
+```js
+// Retrieve the config using URL
+confy.config.load('https://user:pass@api.confy.io/orgs/company/project/app/envs/production', callback);
+
+// or using options hash
+confy.config.load({
+  host: 'https://api.confy.io', user: 'user', pass: 'pass',
+  org: 'company', project: 'app', env: 'production'
+}, callback);
+
+// Callback is given below
+function (err, config) {
+  config.port // => 6000
+  config.db.pass // => 'sun'
+}
+
+// Or you could instantiate a client to work with other api (as shown below)
 ```
 
 ### Build a client
