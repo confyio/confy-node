@@ -165,14 +165,13 @@ user.retrieve(options, callback);
 
 ##### Update authenticated user (PATCH /user)
 
-Update the authenticated user's profile
+Update the authenticated user's profile. Should use basic authentication.
 
 The following arguments are required:
 
- * __email__: Profile email of the user
 
 ```js
-user.update("john@smith.com", options, callback);
+user.update(options, callback);
 ```
 
 ### Organizations api
@@ -201,24 +200,24 @@ The following arguments are required:
  * __email__: Billing email of the organization
 
 ```js
-orgs.create("OpenSourceProject", "admin@osp.com", options, callback);
+orgs.create("Open Source Project", "admin@osp.com", options, callback);
 ```
 
 ##### Retrieve an organization (GET /orgs/:org)
 
-Get an organization the user has access to.
+Get the given organization if the authenticated user is a member.
 
 The following arguments are required:
 
  * __org__: Name of the organization
 
 ```js
-orgs.retrieve("bigcompany", options, callback);
+orgs.retrieve("big-company", options, callback);
 ```
 
 ##### Update an organization (PATCH /orgs/:org)
 
-Update an organization the user is owner of.
+Update the given organization if the authenticated user is the owner. __Email__ is the only thing which can be updated.
 
 The following arguments are required:
 
@@ -226,19 +225,19 @@ The following arguments are required:
  * __email__: Billing email of the organization
 
 ```js
-orgs.update("bigcompany", "admin@bigcompany.com", options, callback);
+orgs.update("big-company", "admin@bigcompany.com", options, callback);
 ```
 
 ### Teams api
 
-Every organization will have a default team named Owners. Owner of the organization will be a default member for every team.
+Every organization will have a default team named __Owners__. Owner of the organization will be a default member for every team.
 
 The following arguments are required:
 
  * __org__: Name of the organization
 
 ```js
-var teams = client.teams("bigcompany");
+var teams = client.teams("big-company");
 ```
 
 ##### List Teams (GET /orgs/:org/teams)
@@ -264,7 +263,7 @@ teams.create("Consultants", "Guys who are contractors", options, callback);
 
 ##### Retrieve a team (GET /orgs/:org/teams/:team)
 
-Get a team the user is member of.
+Get the given team in the given organization. Access only if the authenticated user is a member of the team.
 
 The following arguments are required:
 
@@ -276,7 +275,7 @@ teams.retrieve("consultants", options, callback);
 
 ##### Update a team (PATCH /orgs/:org/teams/:team)
 
-Update a team. Authenticated user should be the owner of the organization.
+Update the given team. __Description__ is the only thing which can be updated. Authenticated user should be the owner of the organization.
 
 The following arguments are required:
 
@@ -309,12 +308,20 @@ The following arguments are required:
  * __team__: Name of the team
 
 ```js
-var members = client.members("bigcompany", "consultants");
+var members = client.members("big-company", "consultants");
+```
+
+##### List members (GET /orgs/:org/teams/:team/member)
+
+List all the members in the given team. Authenticated user should be a member of the team or the owner of the org.
+
+```js
+members.list(options, callback);
 ```
 
 ##### Add a member (POST /orgs/:org/teams/:team/member)
 
-Add the user to the given team. The __user__ in the request needs to be a string.
+Add the user to the given team. The __user__ in the request needs to be a string and be the username of a valid user.  The Authenticated user should be the owner of the organization.
 
 The following arguments are required:
 
@@ -326,7 +333,7 @@ members.add("johnsmith", options, callback);
 
 ##### Remove a member (DELETE /orgs/:org/teams/:team/member)
 
-Remove users from the given team. The __user__ in the request needs to be a string. Cannot delete the default member in a team.
+Remove users from the given team. The __user__ in the request needs to be a string and be the username of a valid user. Cannot delete the default member in a team.  The Authenticated user should be the owner of the organization.
 
 The following arguments are required:
 
@@ -345,12 +352,12 @@ The following arguments are required:
  * __org__: Name of the organization
 
 ```js
-var projects = client.projects("bigcompany");
+var projects = client.projects("big-company");
 ```
 
 ##### List projects (GET /orgs/:org/projects)
 
-List all the projects of the organization which can be seen by the authenticated user.
+List all the projects of the given organization which can be accessed by the authenticated user.
 
 ```js
 projects.list(options, callback);
@@ -358,7 +365,7 @@ projects.list(options, callback);
 
 ##### Create a project (POST /orgs/:org/projects)
 
-Create a project for the given organization. Authenticated user should be the owner of the organization.
+Create a project if the authenticated user is the owner of the given organization. Only the __owners__ team will be able to see the project initially.
 
 The following arguments are required:
 
@@ -366,24 +373,24 @@ The following arguments are required:
  * __description__: Description of the project
 
 ```js
-projects.create("KnowledgeBase", "Support FAQ & Wiki", options, callback);
+projects.create("Knowledge Base", "Support FAQ & Wiki", options, callback);
 ```
 
 ##### Retrieve a project (GET /orgs/:org/projects/:project)
 
-Get a project the user has access to.
+Get the given project in the given organization. Works only if the authenticated user has access to the project.
 
 The following arguments are required:
 
  * __project__: Name of the project
 
 ```js
-projects.retrieve("knowledgebase", options, callback);
+projects.retrieve("knowledge-base", options, callback);
 ```
 
 ##### Update a project (PATCH /orgs/:org/projects/:project)
 
-Update a project. Authenticated user should be the owner of the organization.
+Update the given project. __Description__ is the only thing which can be updated. Authenticated user should be the owner of the organization.
 
 The following arguments are required:
 
@@ -391,24 +398,24 @@ The following arguments are required:
  * __description__: Description of the project
 
 ```js
-projects.update("knowledgebase", "Support FAQ and Wiki", options, callback);
+projects.update("knowledge-base", "Support FAQ and Wiki", options, callback);
 ```
 
 ##### Delete a project (DELETE /orgs/:org/projects/:project)
 
-Delete the given project. Cannot delete the default project in the organization. Authenticated user should be the owner of the organization.
+Delete the given project. Authenticated user should be the owner of the organization.
 
 The following arguments are required:
 
  * __project__: Name of the project
 
 ```js
-projects.destroy("knowledgebase", options, callback);
+projects.destroy("knowledge-base", options, callback);
 ```
 
 ### Access api
 
-List of teams who has access to the project. Default team __Owners__ will have access to every project. Authenticated user should be the owner of the organization for the below endpoints.
+List of teams whic have access to the project. Default team __Owners__ will have access to every project. Authenticated user should be the owner of the organization for the below endpoints.
 
 The following arguments are required:
 
@@ -416,12 +423,20 @@ The following arguments are required:
  * __project__: Name of the project
 
 ```js
-var access = client.access("bigcompany", "knowledgebase");
+var access = client.access("big-company", "knowledge-base");
+```
+
+##### List teams (GET /orgs/:org/projects/:project/access)
+
+Retrieve a list of teams which have access to the given project. Authenticated user should be a member of the team.
+
+```js
+access.list(options, callback);
 ```
 
 ##### Add a team (POST /orgs/:org/projects/:project/access)
 
-Give the team access to the given project. The __team__ in the request needs to be a string.
+Give the team access to the given project. The __team__ in the request needs to be a string and should be the name of a valid team. Authenticated user should be the owner of the organization.
 
 The following arguments are required:
 
@@ -433,7 +448,7 @@ access.add("consultants", options, callback);
 
 ##### Remove a team (DELETE /orgs/:org/projects/:project/access)
 
-Remove project access for the given team. The __team__ in the request needs to be a string. Can't delete default team's access.
+Remove project access for the given team. The __team__ in the request needs to be a string and should be the name of a valid team. Can't delete default team's access. Authenticated user should be the owner of the organization.
 
 The following arguments are required:
 
@@ -445,7 +460,7 @@ access.remove("consultants", options, callback);
 
 ### Environments api
 
-Every project has a default environment named Production. Each environment has one configuration document which can have many keys and values.
+Every project has a default environment named Production. Each environment has __one__ configuration document which can have many keys and values.
 
 The following arguments are required:
 
@@ -453,12 +468,12 @@ The following arguments are required:
  * __project__: Name of the project
 
 ```js
-var envs = client.envs("bigcompany", "knowledgebase");
+var envs = client.envs("big-company", "knowledge-base");
 ```
 
 ##### List all environments (GET /orgs/:org/projects/:project/envs)
 
-List all the environmens of the project which can be seen by the authenticated user.
+List all the environmens of the project. The authenticated user should have access to the project.
 
 ```js
 envs.list(options, callback);
@@ -466,7 +481,7 @@ envs.list(options, callback);
 
 ##### Create an environment (POST /orgs/:org/projects/:project/envs)
 
-Create an environment for the given project. Authenticated user should have access to the project.
+Create an environment. The authenticated user should have access to the project.
 
 The following arguments are required:
 
@@ -479,7 +494,7 @@ envs.create("QA", "Quality assurance guys server", options, callback);
 
 ##### Retrieve an environment (GET /orgs/:org/projects/:project/envs/:env)
 
-Get an environment of the project the user has access to.
+Get the given environment in the given project. The authenticated user should have access to the project.
 
 The following arguments are required:
 
@@ -491,7 +506,7 @@ envs.retrieve("qa", options, callback);
 
 ##### Update an environment (PATCH /orgs/:org/projects/:project/envs/:env)
 
-Update an environment. Authenticated user should have access to the project.
+Update the given environment. __Description__ is the only thing which can be updated. Authenticated user should have access to the project.
 
 The following arguments are required:
 
@@ -504,14 +519,14 @@ envs.update("qa", "Testing server for QA guys", options, callback);
 
 ##### Delete an environment (DELETE /orgs/:org/projects/:project/envs/:env)
 
-Delete the given environment of the project. Authenticated user should have access to the project. Cannot delete the default environment.
+Delete the given environment. Authenticated user should have access to the project. Cannot delete the default environment.
 
 The following arguments are required:
 
  * __env__: Name of the environment
 
 ```js
-envs.destroy("knowledgebase", options, callback);
+envs.destroy("knowledge-base", options, callback);
 ```
 
 ### configuration api
@@ -525,7 +540,7 @@ The following arguments are required:
  * __env__: Name of the environment
 
 ```js
-var config = client.config("bigcompany", "knowledgebase", "production");
+var config = client.config("big-company", "knowledge-base", "production");
 ```
 
 ##### Retrieve an config (GET /orgs/:org/projects/:project/envs/:env/config)
