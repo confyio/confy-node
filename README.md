@@ -569,7 +569,7 @@ config.update({
 ```
 
 ## Contributors
-Here is a list of [Contributors](https://github.com/asm-products/confy-node/contributors)
+Here is a list of [Contributors](https://github.com/confyio/confy-node/contributors)
 
 ### TODO
 
@@ -577,7 +577,7 @@ Here is a list of [Contributors](https://github.com/asm-products/confy-node/cont
 BSD
 
 ## Bug Reports
-Report [here](https://github.com/asm-products/confy-node/issues).
+Report [here](https://github.com/confyio/confy-node/issues).
 
 ## Contact
 Pavan Kumar Sunkara (pavan.sss1991@gmail.com)
