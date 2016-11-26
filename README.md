@@ -14,7 +14,7 @@ $ npm install confyio
 
 #### Versions
 
-Works with [ 0.8 / 0.9 / 0.10 / 0.11 ]
+Works with [ 0.10 / 0.12 / 4 / 6 ]
 
 ## Usage
 
@@ -30,7 +30,7 @@ var confy = require('confyio');
 // => { 'port': 6000, 'db': { 'pass': 'sun' } }
 
 // Using URL
-confy.config.env('https://user:pass@api.confy.io/orgs/company/project/app/envs/production', callback);
+confy.config.env('https://user:pass@api.confy.io/orgs/company/project/app/envs/production/config', callback);
 
 // or using options hash
 confy.config.env({
@@ -50,7 +50,7 @@ function (err) {
 
 ```js
 // Retrieve the config using URL
-confy.config.load('https://user:pass@api.confy.io/orgs/company/project/app/envs/production', callback);
+confy.config.load('https://user:pass@api.confy.io/orgs/company/project/app/envs/production/config', callback);
 
 // or using options hash
 confy.config.load({
