@@ -18,58 +18,90 @@ Works with [ 0.10 / 0.12 / 4 / 6 ]
 
 ## Usage
 
-There are two ways of loading the config.
+### Before Starting
 
- * You can either load it as a hash object with the same structure into a variable.
- * Or you can load it directly into `process.env` with the key formed by concatenizing the path keys with underscores.
+There are two ways of pointing to the credential document. You need to choose one of them.
+
+#### User URL
+
+Using user's authentication information
+
+```js
+'https://user:pass@api.confy.io/orgs/orgname/project/projectname/envs/envname/config'
+```
+
+#### Access Token URL
+
+Using unique access token
+
+```js
+'https://api.confy.io/orgs/orgname/config/abcdefabcdefabcdef1234567890abcdefabcdef'
+```
+
+### Initiate API Client
 
 ```js
 var confy = require('confyio');
 
-// When the config is
+// When the document is the following
 // => { 'port': 6000, 'db': { 'pass': 'sun' } }
+```
 
-// Using URL
-confy.config.env('https://user:pass@api.confy.io/orgs/company/project/app/envs/production/config', callback);
+### Define Endpoint
 
-// or using options hash
-confy.config.env({
-  host: 'https://api.confy.io', user: 'user', pass: 'pass',
-  org: 'company', project: 'app', env: 'production'
-}, callback);
+You need to provide either an URL or an options objects to point the API client to the correct credential document.
 
-// Callback is given below
-function (err) {
+```js
+// User URL
+var endpoint = {
+  user: 'user', // Username of the user trying to access the document
+  pass: 'pass', // Password of the user trying to access the document
+  org: 'company', // Name of the organization
+  project: 'app', // Name of the project
+  env: 'production', // Name of the stage
+};
+
+var endpoint = 'https://user:pass@api.confy.io/orgs/orgname/project/projectname/envs/envname/config';
+
+// Access Token URl
+var endpoint = {
+  org: 'company', // Name of the organization
+  token: 'abcdefabcdefabcdef1234567890abcdefabcdef' // Access token of the document
+};
+
+var endpoint = 'https://api.confy.io/orgs/orgname/config/abcdefabcdefabcdef1234567890abcdefabcdef';
+```
+
+### Call the Server
+
+There are two ways of loading the credentials.
+
+#### Data Object
+
+You can load it as a hash object with the same structure into a variable.
+
+```js
+confy.config.load(endpoint, function (err, config) {
+  config.port // => 6000
+  config.db.pass // => 'sun'
+});
+```
+
+#### Environment Variables
+
+You can load it directly into `process.env` with the key formed by concatenizing the path keys with underscores.
+
+```js
+confy.config.env(endpoint, function (err) {
   // ['port']
   process.env.PORT // => 6000
 
   // ['db']['pass']
   process.env.DB_PASS // => 'sun'
-}
-```
-
-```js
-// Retrieve the config using URL
-confy.config.load('https://user:pass@api.confy.io/orgs/company/project/app/envs/production/config', callback);
-
-// or using options hash
-confy.config.load({
-  host: 'https://api.confy.io', user: 'user', pass: 'pass',
-  org: 'company', project: 'app', env: 'production'
-}, callback);
-
-// Callback is given below
-function (err, config) {
-  config.port // => 6000
-  config.db.pass // => 'sun'
-}
-
-// Or you could instantiate a client to work with other api (as shown below)
+});
 ```
 
 ### Build a client
-
-__Using this api without authentication gives an error__
 
 ##### Basic authentication
 
