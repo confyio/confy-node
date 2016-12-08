@@ -70,7 +70,7 @@ describe('Testing match function', function () {
       assert.isUndefined(result.env);
     });
 
-    it('should have heroku', function () {
+    it('should not have heroku', function () {
       assert.isFalse(result.heroku);
     });
 
