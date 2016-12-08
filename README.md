@@ -27,7 +27,7 @@ There are two ways of pointing to the credential document. You need to choose on
 Using user's authentication information
 
 ```js
-'https://user:pass@api.confy.io/orgs/orgname/project/projectname/envs/envname/config'
+'https://user:pass@api.confy.io/orgs/orgname/projects/projectname/envs/envname/config'
 ```
 
 #### Access Token URL
@@ -61,7 +61,7 @@ var endpoint = {
   env: 'production', // Name of the stage
 };
 
-var endpoint = 'https://user:pass@api.confy.io/orgs/orgname/project/projectname/envs/envname/config';
+var endpoint = 'https://user:pass@api.confy.io/orgs/orgname/projects/projectname/envs/envname/config';
 
 // Access Token URl
 var endpoint = {
@@ -100,6 +100,8 @@ confy.config.env(endpoint, function (err) {
   process.env.DB_PASS // => 'sun'
 });
 ```
+
+## API Reference
 
 ### Build a client
 

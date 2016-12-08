@@ -9,6 +9,9 @@
     "type": "git",
     "url": "https://github.com/confyio/confy-node"
   },
+  "scripts": {
+    "test": "mocha test/*-test.js"
+  },
   "main": "./lib/index.js",
   "dependencies": {
     "request": "2.x.x"
@@ -19,5 +22,9 @@
   "license": "BSD",
   "engines": {
     "node": ">= 0.8.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
   }
 }
